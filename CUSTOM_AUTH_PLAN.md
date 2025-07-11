@@ -8,10 +8,10 @@
 ### 必須要件
 - **プロダクションレディ**: OWASP ASVS L2 相当を満たし、可用性 99.9% を目標とする  
 - **Cookie ベース / セッション方式**（`localStorage` にトークンを保存しない）  
-- **BFF (Backend‑for‑Frontend)** は純粋なプロキシとして動作  
-  - Edge で認証を終端  
-  - Upstream API へ必要なヘッダを付与  
-- **Pages Router**（`getServerSideProps` と API ルート）で動作。Edge Middleware は使用しない
+- **BFF (Backend‑for‑Frontend)** は純粋なプロキシとして動作
+  - API Routes を **Edge Function** として実装し、そこで認証を終端
+  - Upstream API へ必要なヘッダを付与
+- **Pages Router**（`getServerSideProps` と API ルート）で動作。Edge Middleware は Cookie の読み書きが制限されるため使用しない
 
 ### やらないこと
 - JWT やセッション ID をブラウザに露出  
