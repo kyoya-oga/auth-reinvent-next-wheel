@@ -8,10 +8,10 @@
 ### 必須要件
 - **プロダクションレディ**: OWASP ASVS L2 相当を満たし、可用性 99.9% を目標とする  
 - **Cookie ベース / セッション方式**（`localStorage` にトークンを保存しない）  
-- **BFF (Backend‑for‑Frontend)** は純粋なプロキシとして動作  
-  - Edge で認証を終端  
-  - Upstream API へ必要なヘッダを付与  
-- **Pages Router**（`getServerSideProps` と API ルート）で動作。Edge Middleware は使用しない
+- **BFF (Backend‑for‑Frontend)** は純粋なプロキシとして動作
+  - API Routes を **Edge Function** として実装し、そこで認証を終端
+  - Upstream API へ必要なヘッダを付与
+- **Pages Router**（`getServerSideProps` と API ルート）で動作。Edge Middleware は Cookie の読み書きが制限されるため使用しない
 
 ### やらないこと
 - JWT やセッション ID をブラウザに露出  
@@ -82,12 +82,14 @@
 
 | フェーズ | 範囲                                                      | 成功基準                           |
 | -------- | --------------------------------------------------------- | ---------------------------------- |
-| 0        | **スキャフォルディング**: ESLint, Prettier, Husky, Vitest | CI が通る                          |
-| 1        | **Auth エンドポイント** (`/api/auth/*`)                   | 手動ログイン成功、Cookie 設定      |
-| 2        | **プロキシ層** (`/api/proxy/*`)                           | 認証済み API が 200                |
-| 3        | **ページガード** (`withAuthPage`, `useSession`)           | 未認証は `/login` へリダイレクト   |
-| 4        | **リフレッシュ & サイレント更新**                         | 30 分 soak で 401 なし             |
-| 5        | **ハードニング & 可観測性**                               | OWASP ZAP Aランク、Prometheus 指標 |
+| 0        | **スキャフォルディング**: ESLint, Prettier, Husky, Vitest | CI パイプラインが成功              |
+| 1        | **ログイン実装** (`/api/auth/login`)                      | `at`, `rt`, `csrf` Cookie が発行される |
+| 2        | **リフレッシュ実装** (`/api/auth/refresh`)                | 期限切れ `at` が更新され Cookie が再設定 |
+| 3        | **ログアウト実装** (`/api/auth/logout`)                   | Cookie 消去後に保護 API で 401     |
+| 4        | **プロキシ層** (`/api/proxy/*`)                           | 認証付き API 呼び出しが 200         |
+| 5        | **ページガード** (`withAuthPage`, `useSession`)           | 未認証時は `/login` へリダイレクト   |
+| 6        | **リフレッシュ & サイレント更新**                         | 30 分 soak で 401 なし             |
+| 7        | **ハードニング & 可観測性**                               | OWASP ZAP Aランク、Prometheus 指標 |
 
 ---
 
@@ -101,8 +103,17 @@
 - `Referrer-Policy: strict-origin-when-cross-origin` を追加
 - `Permissions-Policy` ヘッダで不要なブラウザ機能を無効化
 - `X-Frame-Options: DENY` でクリックジャックを防止
-
 - SSG/ISR ページにユーザー固有データを埋め込む場合は GSSP に切り替える指針を明記
+
+### シークレット管理
+- `JWT_SIGNING_KEY` は Secret Manager など外部シークレットストアに保存し、デプロイ時に環境変数として注入する
+
+### 監査ログ
+- `timestamp`, `requestId`, `userId`, `action` を含む JSON Lines 形式で出力し、長期保管する
+
+### Prometheus 指標例
+- `bff_request_total{route="/api/auth/login"}` などのリクエストカウント
+- `bff_request_duration_seconds` ヒストグラムでレイテンシを計測
 
 ---
 
