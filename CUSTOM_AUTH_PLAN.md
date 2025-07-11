@@ -67,8 +67,10 @@
 - **SSR**: ヘルパー `getSession(ctx)` が `at` を検証し、期限切れなら内部 `refresh()` を呼び出す  
 - **CSR**: フロントエンドは TanStack Query + `fetch('/api/proxy/...')` を使用。HTTP クライアント層が 401 を検知し、サイレントリフレッシュを試行
 
-### 4.3 リフレッシュ  
+### 4.3 リフレッシュ
 `POST /api/auth/refresh`（ボディなし）。BFF は `rt` を読み取り API `/auth/refresh` へ転送。新しい `at` とローテートされた `rt` を `Set-Cookie`
+- `rt` はサーバ側ストレージ（例: Redis）に紐付けて保存し、期限切れやログアウトで削除して失効させる
+- ローテーション時は新しい `rt` を保存後、旧トークンのエントリを即座に削除して無効化する
 
 ### 4.4 ログアウト  
 `POST /api/auth/logout` ⇒ BFF → API `/auth/logout`。BFF は Cookie を `Max-Age=0` で削除
