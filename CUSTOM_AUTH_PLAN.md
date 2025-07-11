@@ -82,12 +82,14 @@
 
 | フェーズ | 範囲                                                      | 成功基準                           |
 | -------- | --------------------------------------------------------- | ---------------------------------- |
-| 0        | **スキャフォルディング**: ESLint, Prettier, Husky, Vitest | CI が通る                          |
-| 1        | **Auth エンドポイント** (`/api/auth/*`)                   | 手動ログイン成功、Cookie 設定      |
-| 2        | **プロキシ層** (`/api/proxy/*`)                           | 認証済み API が 200                |
-| 3        | **ページガード** (`withAuthPage`, `useSession`)           | 未認証は `/login` へリダイレクト   |
-| 4        | **リフレッシュ & サイレント更新**                         | 30 分 soak で 401 なし             |
-| 5        | **ハードニング & 可観測性**                               | OWASP ZAP Aランク、Prometheus 指標 |
+| 0        | **スキャフォルディング**: ESLint, Prettier, Husky, Vitest | CI パイプラインが成功              |
+| 1        | **ログイン実装** (`/api/auth/login`)                      | `at`, `rt`, `csrf` Cookie が発行される |
+| 2        | **リフレッシュ実装** (`/api/auth/refresh`)                | 期限切れ `at` が更新され Cookie が再設定 |
+| 3        | **ログアウト実装** (`/api/auth/logout`)                   | Cookie 消去後に保護 API で 401     |
+| 4        | **プロキシ層** (`/api/proxy/*`)                           | 認証付き API 呼び出しが 200         |
+| 5        | **ページガード** (`withAuthPage`, `useSession`)           | 未認証時は `/login` へリダイレクト   |
+| 6        | **リフレッシュ & サイレント更新**                         | 30 分 soak で 401 なし             |
+| 7        | **ハードニング & 可観測性**                               | OWASP ZAP Aランク、Prometheus 指標 |
 
 ---
 
