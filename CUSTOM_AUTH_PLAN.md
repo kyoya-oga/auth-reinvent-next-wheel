@@ -99,9 +99,19 @@
 - ブルートフォース検出 (fail‑2‑ban 相当)  
 - `JWT_SIGNING_KEY` を 90 日ごとにローテーションし 2 キー重複期間を設ける  
 - API 側のパスワードハッシュは **argon2id**  
-- CSP で `eval` やインラインスクリプトを禁止  
+- CSP で `eval` やインラインスクリプトを禁止
 
 - SSG/ISR ページにユーザー固有データを埋め込む場合は GSSP に切り替える指針を明記
+
+### シークレット管理
+- `JWT_SIGNING_KEY` は Secret Manager など外部シークレットストアに保存し、デプロイ時に環境変数として注入する
+
+### 監査ログ
+- `timestamp`, `requestId`, `userId`, `action` を含む JSON Lines 形式で出力し、長期保管する
+
+### Prometheus 指標例
+- `bff_request_total{route="/api/auth/login"}` などのリクエストカウント
+- `bff_request_duration_seconds` ヒストグラムでレイテンシを計測
 
 ---
 
