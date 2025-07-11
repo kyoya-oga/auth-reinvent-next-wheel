@@ -100,7 +100,9 @@
 - `JWT_SIGNING_KEY` を 90 日ごとにローテーションし 2 キー重複期間を設ける  
 - API 側のパスワードハッシュは **argon2id**  
 - CSP で `eval` やインラインスクリプトを禁止
-
+- `Referrer-Policy: strict-origin-when-cross-origin` を追加
+- `Permissions-Policy` ヘッダで不要なブラウザ機能を無効化
+- `X-Frame-Options: DENY` でクリックジャックを防止
 - SSG/ISR ページにユーザー固有データを埋め込む場合は GSSP に切り替える指針を明記
 
 ### シークレット管理
