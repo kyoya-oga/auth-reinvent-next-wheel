@@ -1,10 +1,12 @@
 # 実装計画
 
-- [ ] 1. プロジェクト基盤の構築
+本ファイルを進捗管理の唯一のソースとする（最終更新: 2025-08-30）。
+
+- [x] 1. プロジェクト基盤の構築
   - ワークスペース構成とpackage.json設定を作成
   - Nodeバージョンを固定（`.nvmrc` または `.node-version`）
   - pnpmワークスペースを定義（`api/`, `clients/web`）
-  - TypeScript、ESLint、Prettier、Huskyの初期設定を実装
+  - TypeScript、ESLint、Prettierの初期設定を実装（Huskyなし）
   - Vitest、Playwrightのテスト環境を構築
   - `.env.example` を用意し、ランタイム環境変数のバリデーションスキーマ（zod等）を実装
   - GitHub Actions CI/CDパイプラインを設定

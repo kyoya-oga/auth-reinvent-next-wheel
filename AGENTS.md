@@ -2,6 +2,13 @@
 
 本リポジトリは Next.js（Pages Router）を中心に、Cookie/セッション方式の認証 BFF とクライアント群を管理します。貢献を一貫・安全・レビュー容易に保つため、本ガイドに従ってください。詳細な設計は CUSTOM_AUTH_PLAN.md を参照。
 
+## エージェント応答ポリシー（重要）
+- 回答言語: 日本語で回答すること。
+- 口調: 簡潔・直接的・フレンドリー。過度な冗長説明は避ける。
+- 進捗管理: `.kiro/specs/nextjs-bff-auth/tasks.md` を単一のソースとする。
+- コマンド/パス/コード識別子はバッククォートで囲む（例: `pnpm -r build`, `pages/api/auth/login.ts`）。
+- 変更が複数に渡る場合は要点のみ箇条書きで共有し、詳細は差分に委ねる。
+
 ## プロジェクト構成とモジュール
 - `api/`: BFF の API 面（プロキシ/認証）。想定構成: `pages/api/auth/*`, `pages/api/proxy/*` と共有 `lib/`。
 - `clients/`: フロントエンド（例: `clients/web`/Next.js）。典型: `pages/`, `components/`, `lib/auth/`, `hooks/`, `__tests__/`。
