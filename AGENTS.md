@@ -48,6 +48,7 @@
 - 置き場所: 実装横の `*.test.ts` か `__tests__/`。
 - 目標: 総合 ≥80%。認証 Cookie ヘルパー/ガードは ~100% を狙う。
 - 実行: 単体 `pnpm vitest`、E2E `pnpm playwright test`。
+ - テスト名は日本語: `describe`/`it` のタイトルは原則日本語で記述する（例: `describe('セッション', ...)`, `it('期限切れトークンでは null を返す', ...)`）。
 
 ## コミットとプルリクエスト
 - コミット: Conventional Commits（例: `feat: add refresh rotation`, `fix: csrf mismatch handling`）。小さくスコープ明確に。
