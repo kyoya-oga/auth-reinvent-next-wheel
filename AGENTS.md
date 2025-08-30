@@ -8,14 +8,14 @@
 - `CUSTOM_AUTH_PLAN.md`: 認証フロー、Cookie 方針、マイルストーンのソースオブトゥルース。
 
 ## ビルド・テスト・開発コマンド
-現状、このリポジトリには `package.json` が未配置のため、実行スクリプトは未定義です。スキャフォルド後は以下の標準コマンド名で統一してください（`npm`/`pnpm` いずれも可）。
-- 開発サーバ: `npm run dev`（Next.js）
-- 本番ビルド: `npm run build`
-- 型チェック: `npm run typecheck`（tsc）
-- Lint/整形: `npm run lint` / `npm run format`
-- 単体テスト: `npm test` または `npm run test:unit`（Vitest）
-- E2E: `npm run test:e2e`（Playwright）
-提案スクリプト例（各アプリ直下の `package.json`）:
+本リポジトリは pnpm ワークスペース構成です。ルートでは `pnpm -r` で各パッケージのスクリプトを一括実行します。各アプリ直下にも標準スクリプトを用意します（`npm`/`pnpm` いずれも可）。
+- 開発サーバ: `pnpm -r dev`（各パッケージの `next dev` 等）
+- 本番ビルド: `pnpm -r build`
+- 型チェック: `pnpm -r typecheck`（tsc）
+- Lint/整形: `pnpm -r lint` / `pnpm -r format`
+- 単体テスト: `pnpm -r test -- --run`（Vitest）
+- E2E: `pnpm -r test:e2e`（Playwright）
+スクリプト例（各アプリ直下の `package.json`）:
 ```json
 {
   "scripts": {
@@ -26,7 +26,7 @@
     "test": "vitest",
     "test:e2e": "playwright test",
     "typecheck": "tsc -p tsconfig.json"
-  }
+}
 }
 ```
 
@@ -34,7 +34,7 @@
 - 言語: TypeScript、インデント 2 スペース、セミコロン有り、シングルクォート。
 - ファイル名: kebab-case。React コンポーネントは PascalCase、フックは `useX.ts`。
 - API ルート: `pages/api/...` 配下は kebab-case（Pages Router）。
-- ツール: ESLint（next, security）、Prettier、Husky の pre-commit で lint/test 実行。
+- ツール: ESLint（flat config）、Prettier。pre-commit フック（Husky）は使用しません。CI で lint/test/typecheck を実行します。
 
 ## テスト指針
 - フレームワーク: Vitest（単体）、Supertest（統合）、Playwright（E2E）。
@@ -46,6 +46,7 @@
 - コミット: Conventional Commits（例: `feat: add refresh rotation`, `fix: csrf mismatch handling`）。小さくスコープ明確に。
 - PR 必須事項: 目的/影響、関連 Issue、UI はスクリーンショット、セキュリティ影響（Cookie/ヘッダ/トークン）、テスト証跡。
 - CI（lint/test/typecheck）を通過してからレビュー。
+
 
 ## セキュリティと設定のヒント
 - 設計の Cookie 方針に従う: `at` は `/`（Lax）、`rt` は `/api`（Strict）、`csrf` は `/`。

@@ -1,27 +1,50 @@
-# Dependencies
-/node_modules
-/.pnp
+# Dependencies (monorepo-friendly)
+node_modules/
+.pnp
 .pnp.js
 
 # Build outputs
-/.next/
-/out/
+.next/
+out/
+build/
+dist/
 
-# Static exports
-/build
+# Caches and tooling
+.turbo/
+.vercel/
+.cache/
+.eslintcache
 
-# Log files
+# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+
+# Test artifacts
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+
+# TypeScript
+*.tsbuildinfo
 
 # Environment variables
-.env*.local
 .env
+.env.*
+!.env.example
+!.env*.example
 
-# Other
+# Editors/OS
+.vscode/
+.idea/
 .DS_Store
+Thumbs.db
+
+# Certificates/keys
 *.pem
+*.key
 
 # SWC
 .swc/
