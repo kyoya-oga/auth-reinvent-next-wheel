@@ -12,21 +12,21 @@
   - GitHub Actions CI/CDパイプラインを設定
   - _要件: 8.4, 8.5_
 
-- [ ] 2. 認証ユーティリティとモデルの実装
-  - [ ] 2.1 TypeScript型定義とインターフェースの作成
+- [x] 2. 認証ユーティリティとモデルの実装
+  - [x] 2.1 TypeScript型定義とインターフェースの作成
     - AuthTokens、LoginCredentials、User、Sessionの型定義を実装
     - CookieConfig、AuthError、SecurityLogの型定義を作成
     - 各コンポーネントのインターフェース定義を実装
     - _要件: 1.1, 1.2, 1.3_
 
-  - [ ] 2.2 Cookie管理ユーティリティの実装
+  - [x] 2.2 Cookie管理ユーティリティの実装
     - setAuthCookies、clearAuthCookies関数を実装
     - Cookie設定（HttpOnly、Secure、SameSite）の適用
     - アクセストークン、リフレッシュトークン、CSRFトークンの個別管理
     - Cookie管理の単体テストを作成
     - _要件: 1.2, 1.3, 1.4_
 
-  - [ ] 2.3 トークン検証とセッション管理の実装
+  - [x] 2.3 トークン検証とセッション管理の実装
     - JWT検証ロジックまたは不透明トークン検証を実装
     - セッション情報の取得と検証機能を作成
     - トークン有効期限チェック機能を実装
